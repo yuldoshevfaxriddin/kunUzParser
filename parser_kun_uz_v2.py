@@ -1,6 +1,7 @@
 import requests
 import bs4
 import json
+import dataBase
 
 url = 'https://kun.uz'
 url_authored = 'https://kun.uz/authored'
@@ -53,10 +54,11 @@ def newsList(base_html):
             'image':news.find('img')['src'],
             'meta-data':news.find('div').find('span').text,
             'original-url':url+news.find('a')['href'],
-            'tittle':news.find('a',{'class':'news__title'}).text
+            'title':news.find('a',{'class':'news__title'}).text
         }
         item['content']=getBs4(getHtml(item['original-url'])).find('div',{'class':'single-content'}).text;
         news_list.append(item)
+        
     return news_list
 
 xhr = {
@@ -72,5 +74,6 @@ xhr = {
 if __name__=='__main__':
     
     news_list = newsList(getHtml(url_authored))
-    with open('test.html','w',encoding='utf-8') as f:
-        f.write(json.dumps(news_list))
+    dataBase.insertNews(news_list=news_list)
+    # with open('test.html','w',encoding='utf-8') as f:
+    #     f.write(json.dumps(news_list))

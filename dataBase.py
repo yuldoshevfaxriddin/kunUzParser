@@ -4,7 +4,6 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    # database="uzbgram"
     database="kunUzParser"
     )
 mycursor = mydb.cursor()
@@ -20,9 +19,16 @@ def createDB():
     mycursor.execute("CREATE DATABASE kunUzParser")
 # createDB()
 def createTables():
-    mycursor = mydb.cursor()
-    mycursor.execute("CREATE TABLE region (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100))")
-    mycursor.execute("CREATE TABLE category (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100))")
+    # mycursor.execute("CREATE TABLE region (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100))")
+    # mycursor.execute("CREATE TABLE category (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100))")
+    mycursor.execute("""CREATE TABLE news (
+                     id INT AUTO_INCREMENT PRIMARY KEY,
+                     image VARCHAR(100),
+                     meta_data VARCHAR(100),
+                     original_url varchar(150),
+                     title varchar(250),
+                     content text
+                     )""")
     print('tables created !')
 
 def dropTables():
@@ -37,6 +43,21 @@ def dropTables():
 
     print('dropping succes !')
     
+def insertNews(news_list):
+    for news in news_list:
+        sql = f"""INSERT INTO `news`( `image`, `meta_data`, `original_url`, `title`, `content`) 
+        VALUES ('{news['image']}','{news['meta-data']}','{news['original-url']}','{news['title']}','{news['content']}')"""
+        mycursor.execute(sql)
+        mydb.commit()
+    print('inserting succes !')
+
+def insertNewsTest():
+    sql = f"""INSERT INTO `news`( `image`, `meta_data`, `original_url`, `title`, `content`) 
+    VALUES ('asdas','wqeqw','qweqwe','qweqw','qweqwe')"""
+    print(sql)
+    mycursor.execute(sql)
+    mydb.commit()
+    print('inserting succes !')
 
 def runningDB():
     # createDB()
@@ -44,8 +65,9 @@ def runningDB():
 
 if __name__=='__main__':
 
-    runningDB()
+    # runningDB()
     # dropTables()
+    insertNewsTest()
 
 
 # news
