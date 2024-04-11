@@ -42,7 +42,21 @@ def dropTables():
         # mycursor.execute(f"DROP TABLE region")
 
     print('dropping succes !')
-    
+
+def showTables():
+    mycursor.execute("SHOW TABLES")
+    table_list = []
+    for x in mycursor:
+        table_list.append(x[0])
+    print('tables',table_list)
+
+def showData():
+    mycursor.execute("SELECT * FROM news")
+    myresult = mycursor.fetchall()
+    for x in myresult:
+          print(x)
+   
+      
 def insertNews(news_list):
     for news in news_list:
         sql = f"""INSERT INTO `news`( `image`, `meta_data`, `original_url`, `title`, `content`) 
@@ -67,7 +81,9 @@ if __name__=='__main__':
 
     # runningDB()
     # dropTables()
-    insertNewsTest()
+    # insertNewsTest()
+    showTables()
+    showData()
 
 
 # news
